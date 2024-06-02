@@ -16,11 +16,14 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Sync database and start server
-sequelize.sync().then(() => {
-  console.log('Database synchronized.');
-  app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+sequelize
+  .sync()
+  .then(() => {
+    console.log('Database synchronized.');
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  })
+  .catch((error: Error) => {
+    console.error('Error connecting to the database:', error.message);
   });
-}).catch((error) => {
-  console.error('Error connecting to the database:', error);
-});
