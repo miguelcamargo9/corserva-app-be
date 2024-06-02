@@ -13,7 +13,21 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
+      postgres-production:
+        image: postgres:16
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: corserva
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U user -d corserva"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      postgres-test:
         image: postgres:16
         env:
           POSTGRES_USER: user
@@ -28,7 +42,8 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgres://user:password@localhost:5434/corserva_test
+      DATABASE_URL: postgres://user:password@localhost:5433/corserva
+      DATABASE_URL_TEST: postgres://user:password@localhost:5434/corserva_test
 
     steps:
     - name: Checkout code
@@ -42,15 +57,26 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Wait for PostgreSQL
+    - name: Wait for PostgreSQL production
       run: |
         sudo apt-get install -y postgresql-client
-        until pg_isready -h localhost -p 5434 -U user -d corserva_test; do
-          echo "Waiting for postgres to be ready..."
+        until pg_isready -h localhost -p 5433 -U user -d corserva; do
+          echo "Waiting for postgres production to be ready..."
           sleep 1
         done
 
-    - name: Run database migrations
+    - name: Wait for PostgreSQL test
+      run: |
+        sudo apt-get install -y postgresql-client
+        until pg_isready -h localhost -p 5434 -U user -d corserva_test; do
+          echo "Waiting for postgres test to be ready..."
+          sleep 1
+        done
+
+    - name: Run database migrations for production
+      run: npx sequelize-cli db:migrate --env production
+
+    - name: Run database migrations for test
       run: npx sequelize-cli db:migrate --env test
 
     - name: Run tests
