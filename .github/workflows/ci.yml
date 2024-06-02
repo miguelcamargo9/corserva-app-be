@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     services:
@@ -23,9 +22,9 @@ jobs:
         ports:
           - 5434:5432
         options: >-
-          --health-cmd "pg_isready -U user -d corserva_test" 
-          --health-interval 10s 
-          --health-timeout 5s 
+          --health-cmd "pg_isready -U user -d corserva_test"
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
 
     env:
@@ -43,14 +42,16 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Set up the database
+    - name: Wait for PostgreSQL
       run: |
         sudo apt-get install -y postgresql-client
-        until pg_isready -h localhost -p 5434 -U user; do
+        until pg_isready -h localhost -p 5434 -U user -d corserva_test; do
           echo "Waiting for postgres to be ready..."
           sleep 1
         done
-        npx sequelize-cli db:migrate --env test
+
+    - name: Run database migrations
+      run: npx sequelize-cli db:migrate --env test
 
     - name: Run tests
       run: npm run test
