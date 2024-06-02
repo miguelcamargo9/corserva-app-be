@@ -1,9 +1,30 @@
+import { Sequelize } from 'sequelize';
 import request from 'supertest';
-import { sequelize } from '../database';
 import app from '../app';
+import SaleOrderItem from '../models/saleOrderItem';
+
+const sequelize = new Sequelize('corserva_test', 'user', 'password', {
+  host: '127.0.0.1',
+  port: 5434,
+  dialect: 'postgres',
+});
 
 beforeAll(async () => {
   await sequelize.sync({ force: true });
+});
+
+beforeEach(async () => {
+  await SaleOrderItem.destroy({ where: {} });
+
+  await SaleOrderItem.create({
+    name: 'Test Item',
+    quantity: 10,
+    price: 100.0,
+  });
+});
+
+afterAll(async () => {
+  await sequelize.close();
 });
 
 describe('Sale Order Item API', () => {
@@ -75,8 +96,4 @@ describe('Sale Order Item API', () => {
     const response = await request(app).delete(`/sale-order-items/${id}`);
     expect(response.status).toBe(204);
   });
-});
-
-afterAll(async () => {
-  await sequelize.close();
 });
