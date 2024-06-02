@@ -1,19 +1,7 @@
-import express, { Request, Response } from 'express';
-import bodyParser from 'body-parser';
 import { sequelize } from './database';
-import saleOrderItemRoutes from './routes/saleOrderItem';
+import app from './app';
 
-const app = express();
 const port = 3001;
-
-// Middleware
-app.use(bodyParser.json());
-
-// Routes
-app.use('/sale-order-items', saleOrderItemRoutes);
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, Corserva!');
-});
 
 // Sync database and start server
 sequelize
