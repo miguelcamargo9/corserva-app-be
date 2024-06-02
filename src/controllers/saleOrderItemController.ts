@@ -41,7 +41,7 @@ export const getSaleOrderItemById = async (req: Request, res: Response) => {
   try {
     const saleOrderItem = await SaleOrderItem.findByPk(req.params.id);
     if (!saleOrderItem) {
-      return res.status(404).json({ error: 'Sale Order Item no encontrado' });
+      return res.status(404).json({ error: 'Sale Order Item not found' });
     }
     res.status(200).json(saleOrderItem);
   } catch (err) {
@@ -62,7 +62,7 @@ export const updateSaleOrderItemById = async (req: Request, res: Response) => {
       const updatedSaleOrderItem = await SaleOrderItem.findByPk(req.params.id);
       res.status(200).json(updatedSaleOrderItem);
     } else {
-      res.status(404).json({ error: 'Sale Order Item no encontrado' });
+      res.status(404).json({ error: 'Sale Order Item not found' });
     }
   } catch (err) {
     res.status(500).json({ error: getErrorMessage(err) });
@@ -77,7 +77,7 @@ export const deleteSaleOrderItemById = async (req: Request, res: Response) => {
     if (deleted) {
       res.status(204).send();
     } else {
-      res.status(404).json({ error: 'Sale Order Item no encontrado' });
+      res.status(404).json({ error: 'Sale Order Item not found' });
     }
   } catch (err) {
     res.status(500).json({ error: getErrorMessage(err) });
