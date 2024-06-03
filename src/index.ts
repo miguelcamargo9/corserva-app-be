@@ -1,7 +1,9 @@
 import { sequelize } from './database';
 import app from './app';
+import * as dotenv from 'dotenv';
 
-const port = 3001;
+dotenv.config();
+const port = process.env.PORT || 3001;
 
 // Sync database and start server
 sequelize

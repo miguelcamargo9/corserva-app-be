@@ -4,11 +4,23 @@ services:
   app:
     build: .
     ports:
-      - '3002:3000'
+      - '3002:3001'
     volumes:
       - .:/usr/src/app
     depends_on:
       - db
+      - db_test
+    environment:
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: corserva
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME_TEST: corserva_test
+      DB_HOST_TEST: db_test
+      DB_PORT_TEST: 5432
+    networks:
+      - corserva-network
 
   db:
     image: postgres:16
@@ -20,6 +32,8 @@ services:
       - '5433:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
+    networks:
+      - corserva-network
 
   db_test:
     image: postgres:16
@@ -31,7 +45,12 @@ services:
       - '5434:5432'
     volumes:
       - db_test_data:/var/lib/postgresql/data
+    networks:
+      - corserva-network
 
 volumes:
   db_data:
   db_test_data:
+
+networks:
+  corserva-network:
