@@ -5,7 +5,7 @@ module.exports = {
     password: process.env.DB_PASSWORD || 'password',
     database: process.env.DB_NAME || 'corserva',
     host: process.env.DB_HOST || '127.0.0.1',
-    port: process.env.DB_PORT || 5432,
+    port: process.env.DB_PORT || 5433,
     dialect: 'postgres',
   },
   test: {
@@ -13,7 +13,7 @@ module.exports = {
     password: process.env.DB_PASSWORD || 'password',
     database: process.env.DB_NAME_TEST || 'corserva_test',
     host: process.env.DB_HOST_TEST || '127.0.0.1',
-    port: process.env.DB_PORT_TEST || 5432,
+    port: process.env.DB_PORT_TEST || 5434,
     dialect: 'postgres',
   },
   production: {
@@ -21,7 +21,7 @@ module.exports = {
     password: process.env.DB_PASSWORD || 'password',
     database: process.env.DB_NAME || 'corserva',
     host: process.env.DB_HOST || '127.0.0.1',
-    port: process.env.DB_PORT || 5432,
+    port: process.env.DB_PORT || 5433,
     dialect: 'postgres',
   },
 };
