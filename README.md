@@ -108,9 +108,18 @@ This is a backend application for managing orders using a RESTful API. The appli
 Create a `.env` file in the root directory with the following variables:
   ```env
   NODE_ENV=development
-  PORT=3000
-  DATABASE_URL=postgres://user:password@localhost:5433/corserva
-  DATABASE_URL_TEST=postgres://user:password@localhost:5434/corserva_test
+  DB_USER=user
+  DB_PASSWORD=password
+  DB_NAME=corserva
+  DB_HOST=127.0.0.1
+  DB_PORT=5433
+
+  # Test
+  DB_USER=user
+  DB_PASSWORD=password
+  DB_NAME_TEST=corserva_test
+  DB_HOST_TEST=127.0.0.1
+  DB_PORT_TEST=5434
   ```
 
 ## Docker
