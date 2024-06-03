@@ -1,8 +1,18 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import saleOrderItemRoutes from './routes/saleOrderItem';
 
 const app = express();
+
+// CORS Configuration
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Middleware
 app.use(bodyParser.json());
